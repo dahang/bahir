@@ -18,8 +18,9 @@
 // scalastyle:off println
 package org.apache.spark.examples.streaming.twitter
 
-import org.apache.log4j.{Level, Logger}
+import java.util
 
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.twitter.TwitterUtils
@@ -42,8 +43,12 @@ object TwitterHashTagJoinSentiments {
     }
 
     val Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
-    val filters = args.takeRight(args.length - 4)
+//    val filters = args.takeRight(args.length - 4)
 
+    val  filters = new  util.HashMap[String, String]()
+    filters.put("track", "trump")
+    filters.put("follow", "25073877")
+//    ("track" -> "trump", "follow" -> "25073877")
     // Set the system properties so that Twitter4j library used by Twitter stream
     // can use them to generate OAuth credentials
     System.setProperty("twitter4j.oauth.consumerKey", consumerKey)

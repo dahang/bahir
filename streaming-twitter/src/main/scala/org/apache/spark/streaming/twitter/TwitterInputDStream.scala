@@ -41,7 +41,7 @@ private[streaming]
 class TwitterInputDStream(
     _ssc: StreamingContext,
     twitterAuth: Option[Authorization],
-    filters: Seq[String],
+    filters: java.util.Map[String, String],
     storageLevel: StorageLevel
   ) extends ReceiverInputDStream[Status](_ssc)  {
 
@@ -59,7 +59,7 @@ class TwitterInputDStream(
 private[streaming]
 class TwitterReceiver(
     twitterAuth: Authorization,
-    filters: Seq[String],
+    filters: java.util.Map[String, String],
     storageLevel: StorageLevel
   ) extends Receiver[Status](storageLevel) with Logging {
 
@@ -86,8 +86,10 @@ class TwitterReceiver(
       })
 
       val query = new FilterQuery
-      if (filters.size > 0) {
-        query.track(filters.mkString(","))
+      if (filters.containsKey("track") || filters.containsKey("follow")) {
+//        query.track(filters.mkString(","))
+        query.track(filters.getOrDefault("track", ""))
+        query.follow(filters.getOrDefault("follow", "0").toInt)
         newTwitterStream.filter(query)
       } else {
         newTwitterStream.sample()

@@ -17,10 +17,11 @@
 
 package org.apache.spark.streaming.twitter
 
+import java.util
+
 import org.scalatest.BeforeAndAfter
 import twitter4j.Status
 import twitter4j.auth.{Authorization, NullAuthorization}
-
 import org.apache.spark.SparkFunSuite
 import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
@@ -37,7 +38,12 @@ class TwitterStreamSuite extends SparkFunSuite with BeforeAndAfter with Logging 
 
   test("twitter input stream") {
     val ssc = new StreamingContext(master, framework, batchDuration)
-    val filters = Seq("filter1", "filter2")
+//    val filters = Map("track" -> "filter1", "follow" -> "filter2")
+
+    val  filters = new  util.HashMap[String, String]()
+    filters.put("track", "trump")
+    filters.put("follow", "25073877")
+
     val authorization: Authorization = NullAuthorization.getInstance()
 
     // tests the API, does not actually test data receiving

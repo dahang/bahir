@@ -17,6 +17,7 @@
 
 package org.apache.spark.streaming.twitter;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.junit.Test;
 import twitter4j.Status;
 import twitter4j.auth.Authorization;
@@ -24,11 +25,15 @@ import twitter4j.auth.NullAuthorization;
 import org.apache.spark.storage.StorageLevel;
 import org.apache.spark.streaming.LocalJavaStreamingContext;
 import org.apache.spark.streaming.api.java.JavaDStream;
+import java.util.*;
 
 public class JavaTwitterStreamSuite extends LocalJavaStreamingContext {
   @Test
   public void testTwitterStream() {
-    String[] filters = { "filter1", "filter2" };
+    Map<String, String> filters = new HashedMap();
+    filters.put("track", "trump");
+    filters.put("follow", "25073877");
+//    val filters = Map("track" -> "filter1", "follow" -> "filter2")
     Authorization auth = NullAuthorization.getInstance();
 
     // tests the API, does not actually test data receiving

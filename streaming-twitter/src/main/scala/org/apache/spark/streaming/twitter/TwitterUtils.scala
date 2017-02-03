@@ -19,11 +19,12 @@ package org.apache.spark.streaming.twitter
 
 import twitter4j.Status
 import twitter4j.auth.Authorization
-
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaStreamingContext}
 import org.apache.spark.streaming.dstream.ReceiverInputDStream
+
+import scala.collection.JavaConversions._
 
 object TwitterUtils {
   /**
@@ -39,7 +40,7 @@ object TwitterUtils {
   def createStream(
       ssc: StreamingContext,
       twitterAuth: Option[Authorization],
-      filters: Seq[String] = Nil,
+      filters: java.util.Map[String, String] = Map.empty[String, String],
       storageLevel: StorageLevel = StorageLevel.MEMORY_AND_DISK_SER_2
     ): ReceiverInputDStream[Status] = {
     new TwitterInputDStream(ssc, twitterAuth, filters, storageLevel)
@@ -66,7 +67,7 @@ object TwitterUtils {
    * @param jssc    JavaStreamingContext object
    * @param filters Set of filter strings to get only those tweets that match them
    */
-  def createStream(jssc: JavaStreamingContext, filters: Array[String]
+  def createStream(jssc: JavaStreamingContext, filters: java.util.Map[String, String]
       ): JavaReceiverInputDStream[Status] = {
     createStream(jssc.ssc, None, filters)
   }
@@ -82,7 +83,7 @@ object TwitterUtils {
    */
   def createStream(
       jssc: JavaStreamingContext,
-      filters: Array[String],
+      filters: java.util.Map[String, String],
       storageLevel: StorageLevel
     ): JavaReceiverInputDStream[Status] = {
     createStream(jssc.ssc, None, filters, storageLevel)
@@ -109,7 +110,7 @@ object TwitterUtils {
   def createStream(
       jssc: JavaStreamingContext,
       twitterAuth: Authorization,
-      filters: Array[String]
+      filters: java.util.Map[String, String]
     ): JavaReceiverInputDStream[Status] = {
     createStream(jssc.ssc, Some(twitterAuth), filters)
   }
@@ -124,7 +125,7 @@ object TwitterUtils {
   def createStream(
       jssc: JavaStreamingContext,
       twitterAuth: Authorization,
-      filters: Array[String],
+      filters: java.util.Map[String, String],
       storageLevel: StorageLevel
     ): JavaReceiverInputDStream[Status] = {
     createStream(jssc.ssc, Some(twitterAuth), filters, storageLevel)

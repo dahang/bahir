@@ -54,7 +54,7 @@ object TwitterAlgebirdHLL {
 
     /** Bit size parameter for HyperLogLog, trades off accuracy vs size */
     val BIT_SIZE = 12
-    val filters = args
+//    val filters = args
     val sparkConf = new SparkConf().setAppName("TwitterAlgebirdHLL")
 
     // check Spark configuration for master URL, set it to local if not configured
@@ -63,7 +63,7 @@ object TwitterAlgebirdHLL {
     }
 
     val ssc = new StreamingContext(sparkConf, Seconds(5))
-    val stream = TwitterUtils.createStream(ssc, None, filters, StorageLevel.MEMORY_ONLY_SER)
+    val stream = TwitterUtils.createStream(ssc, None)
 
     val users = stream.map(status => status.getUser.getId)
 

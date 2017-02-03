@@ -66,7 +66,7 @@ object TwitterAlgebirdCMS {
     // K highest frequency elements to take
     val TOPK = 10
 
-    val filters = args
+//    val filters = Map(args)
     val sparkConf = new SparkConf().setAppName("TwitterAlgebirdCMS")
 
     // check Spark configuration for master URL, set it to local if not configured
@@ -75,7 +75,7 @@ object TwitterAlgebirdCMS {
     }
 
     val ssc = new StreamingContext(sparkConf, Seconds(10))
-    val stream = TwitterUtils.createStream(ssc, None, filters, StorageLevel.MEMORY_ONLY_SER_2)
+    val stream = TwitterUtils.createStream(ssc, None)
 
     val users = stream.map(status => status.getUser.getId)
 

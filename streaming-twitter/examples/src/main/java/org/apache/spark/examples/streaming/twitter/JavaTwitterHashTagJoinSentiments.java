@@ -17,6 +17,7 @@
 
 package org.apache.spark.examples.streaming.twitter;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -32,12 +33,16 @@ import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
+import scala.None;
 import scala.Tuple2;
 import twitter4j.Status;
+import twitter4j.StreamController;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * Displays the most positive hash tags by joining the streaming Twitter data with a static RDD of
@@ -62,7 +67,9 @@ public class JavaTwitterHashTagJoinSentiments {
     String consumerSecret = args[1];
     String accessToken = args[2];
     String accessTokenSecret = args[3];
-    String[] filters = Arrays.copyOfRange(args, 4, args.length);
+//    String[] filters = Arrays.copyOfRange(args, 4, args.length);
+      Map<String, String> filters = new HashedMap();
+      filters.put("a", "b");
 
     // Set the system properties so that Twitter4j library used by Twitter stream
     // can use them to generate OAuth credentials
